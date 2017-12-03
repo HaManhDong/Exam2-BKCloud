@@ -1,7 +1,7 @@
 # Tài liệu hướng dẫn nạp code cho Board ESP8266 IoT WiFi Uno
 
 1. Sở đồ lắp mạch
-
+    ![https://raw.githubusercontent.com/HaManhDong/Exam2-BKCloud/master/thao/images/exam3_bb.png](https://raw.githubusercontent.com/HaManhDong/Exam2-BKCloud/master/thao/images/exam3_bb.png)
 1. Cài đặt Arduino IDE
 
     1. Download IDE tại
@@ -27,6 +27,7 @@
 1. Sử dụng điện thoại chọn Wifi được phát ra bởi board(OLP_BKCLOUD) sau đó cấu hình wifi + mqtt server + mqtt port cho module như trong hình
     1. ![https://raw.githubusercontent.com/NTT-TNN/ESP_OLP/master/docs/images/smartwifi_1.png](https://raw.githubusercontent.com/NTT-TNN/ESP_OLP/master/docs/images/smartwifi_1.png)
     1. ![https://raw.githubusercontent.com/NTT-TNN/ESP_OLP/master/docs/images/smartwifi_2.png](https://raw.githubusercontent.com/NTT-TNN/ESP_OLP/master/docs/images/smartwifi_2.png)
+    1. Tại bước này có thể tùy chỉnh tham số mqtt server và port
     1. ![https://raw.githubusercontent.com/NTT-TNN/ESP_OLP/master/docs/images/smartwifi_3.png](https://raw.githubusercontent.com/NTT-TNN/ESP_OLP/master/docs/images/smartwifi_3.png)
-    1. !d[https://raw.githubusercontent.com/NTT-TNN/ESP_OLP/master/docs/images/smartwifi_4.png](https://raw.githubusercontent.com/NTT-TNN/ESP_OLP/master/docs/images/smartwifi_4.png)
+    1. ![https://raw.githubusercontent.com/NTT-TNN/ESP_OLP/master/docs/images/smartwifi_4.png](https://raw.githubusercontent.com/NTT-TNN/ESP_OLP/master/docs/images/smartwifi_4.png)
 1. Ấn save.
