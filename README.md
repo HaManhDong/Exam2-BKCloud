@@ -51,7 +51,7 @@ Các measurement    
 
 **data**
 
-	time | macAddr (tag)  | name (tag) | unit (field - Float) | value (field - Float)
+	time | macAddr (tag)  | name (tag) | unit (field - String) | value (field - Float)
 	
 **2. Các topic trên MQTT**
 
