@@ -1,7 +1,7 @@
 	 	 	
 **1. Thiết kế cơ sở dữ liệu để lưu trữ dữ liệu từ các sensors:**
 
-**MySQL**: tên database: **bkcloud_iot**
+**MySQL**: tên database: **iot**
 
 **User: root - Pass: bklcoud**
 
@@ -35,7 +35,7 @@ Các bảng trong mysql:
 	)
 
 
-**InFluxDB**:  tên database: **bkcloud_iot**
+**InFluxDB**:  tên database: **iot**
 
 Các measurement     
  
