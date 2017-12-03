@@ -47,7 +47,7 @@ Các measurement    
 
 	time | macAddr (tag)  | name (tag) | unit (field - Float) | value (field - Float)
 	
-**Các topic trên MQTT**
+**2. Các topic trên MQTT**
 
 **bkcloud/data** từ ESP gửi lên Node-red với 2 định dạng:
 
