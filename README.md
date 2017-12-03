@@ -68,6 +68,7 @@ Các measurement    
 	
 	{
 		macAddr: "", 
+		name: "HC-SR501",
 		type: "motion",
 	}
 
