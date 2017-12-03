@@ -9,20 +9,21 @@ Các bảng trong mysql:
 
 **device**
 
-	macAdrr | type | created_at | status
+	macAdrr | type | created_at | status | last_updated
 	
 	CREATE TABLE device (
 	macAddr 	VARCHAR 	NOT NULL,
 	type		VARCHAR 	NOT NULL,
 	status 		VARCHAR 	NOT NULL,
 	created_at 	DATETIME 	NOT NULL,
+	last_updated 	DATETIME 	NOT NULL,
 	PRIMARY KEY (macAddr)
 	)
 
 
 **sensor**
 
-	macAddr | name | unit | created_at | status 
+	macAddr | name | unit | created_at | status | last_updated
 	
 	CREATE TABLE sensor (
 	name 		VARCHAR		NOT NULL,
@@ -30,6 +31,7 @@ Các bảng trong mysql:
 	unit 		VARCHAR,
 	status 		VARCHAR 	NOT NULL,
 	created_at 	DATETIME	NOT NULL,
+	last_updated 	DATETIME 	NOT NULL,
 	PRIMARY KEY (name, macAddr),
 	CONSTRAINT fk_device FOREIGN KEY (macAddr) REFERENCES device(macAddr) ON DELETE CASCADE
 	)
@@ -39,13 +41,17 @@ Các bảng trong mysql:
 
 Các measurement     
  
-**logs**
+**device_logs**
+
+	time | macAddr (tag) | status (field - String)
+	
+**sensor_logs**
 
 	time | macAddr (tag) | name (tag) | status (field - String)
 
 **data**
 
-	time | macAddr (tag)  | name (tag) | unit (field - Float) | value (field - Float)
+	time | macAddr (tag)  | name (tag) | unit (field - String) | value (field - Float)
 	
 **2. Các topic trên MQTT**
 
@@ -62,6 +68,7 @@ Các measurement    
 	
 	{
 		macAddr: "", 
+		name: "HC-SR501",
 		type: "motion",
 	}
 

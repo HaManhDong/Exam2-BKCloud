@@ -9,8 +9,6 @@ services:
     
     influxdb:
         image: influxdb
-        volumes:
-          - ./influxdb:/var/lib/influxdb
         environment:
           - INFLUXDB_DB=iot
         ports:
