@@ -1,7 +1,7 @@
 	 	 	
 **1. Thiết kế cơ sở dữ liệu để lưu trữ dữ liệu từ các sensors:**
 
-**MySQL**: tên database: **bkcloud_iot**
+**MySQL**: tên database: **iot**
 
 **User: root - Pass: bklcoud**
 
@@ -35,7 +35,7 @@ Các bảng trong mysql:
 	)
 
 
-**InFluxDB**:  tên database: **bkcloud_iot**
+**InFluxDB**:  tên database: **iot**
 
 Các measurement     
  
@@ -47,7 +47,7 @@ Các measurement    
 
 	time | macAddr (tag)  | name (tag) | unit (field - Float) | value (field - Float)
 	
-**Các topic trên MQTT**
+**2. Các topic trên MQTT**
 
 **bkcloud/data** từ ESP gửi lên Node-red với 2 định dạng:
 
