@@ -9,8 +9,6 @@ services:
     
     influxdb:
         image: influxdb
-        volumes:
-          - ./influxdb:/var/lib/influxdb
         environment:
           - INFLUXDB_DB=iot
         ports:
@@ -46,7 +44,7 @@ services:
            - mqtt:mqtt
            - mysql:mysql
            - influxdb:influxdb
-        command: [sh, -c, "cd /data && npm i mysql@2.15.0 influx@5.0.7 express@4.16.0 mustache@2.3.0 moment@2.19.2 node-red-dashboard && cd /usr/src/node-red && npm start -- --userDir /data"]
+        command: [sh, -c, "cd /data && npm i mysql@2.15.0 influx@5.0.7 express@4.16.0 mustache@2.3.0 moment@2.19.2 node-red-contrib-influxdb node-red-dashboard && cd /usr/src/node-red && npm start -- --userDir /data"]
 
 networks:
     bkcloud-net:
