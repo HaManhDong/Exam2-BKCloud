@@ -49,7 +49,7 @@ Các measurement    
 	
 **Các topic trên MQTT**
 
-**icse/data** từ ESP gửi lên Node-red với 2 định dạng:
+**bkcloud/data** từ ESP gửi lên Node-red với 2 định dạng:
 
 	{
 		macAddr: "", 
@@ -66,7 +66,7 @@ Các measurement    
 	}
 
 
-**icse/MAC/action** gửi từ Node-red tới ESP với **3** định dạng:
+**bkcloud/MAC/action** gửi từ Node-red tới ESP với **3** định dạng:
 
 	{
 		type: "register", status: "OK"
@@ -83,7 +83,7 @@ Các measurement    
 	}
 
 
-**icse/newDevice**
+**bkcloud/newDevice**
 
 	{
 		macAddr: "5C:3B:1A:16:2A",
