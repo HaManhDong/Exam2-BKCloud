@@ -38,12 +38,12 @@ if __name__ == "__main__":
                 'macAddr': "5C:3B:1A:16:2A",
                 'type': "data",
                 'sensorsData': [
-                    # {'name': "DHT11-t", 'value': 50, 'unit': "C"},
+                    {'name': "DHT11-t", 'value': 20+i, 'unit': "C"},
                     {'name': "BH1750", 'value': 360, 'unit': "Lux"},
                 ]
             }
             esp_simulator.publish_data("bkcloud/data", publish_data)
-            time.sleep(2)
+            time.sleep(1)
             publish_data={
                 'macAddr': "5C:3B:1A:16:2A",
                 'name': "HC-SR501",
@@ -53,7 +53,7 @@ if __name__ == "__main__":
             #     sensor_data['mac_addr'] = esp_simulator.mac_address
             #     sensor_data['timestamp'] = int(time.mktime(datetime.now().timetuple())) * pow(10, 3)
             esp_simulator.publish_data("bkcloud/data", publish_data)
-            time.sleep(2)
+            time.sleep(1)
         esp_simulator.mqtt_client.loop_stop()
         esp_simulator.mqtt_client.disconnect()
     else:
