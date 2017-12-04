@@ -4,6 +4,7 @@ $('#dashboard').on('click', function () {
     remove_charts_tab();
     $('#content-header-text').text('Dashboard');
     $('.bkcloud-dashboard').css('display', '');
+    $('.things-state-container').css('display', '');
     $('.current-value-sensors').css('display', '');
     $('.avarage-temperature-chart').css('display', '');
     $('#bkcloud-datatables-container').css('display', 'none');
@@ -87,11 +88,16 @@ $('#dashboard').on('click', function () {
     let getDeviceInfo = ajaxQuery(DEVICE_INFO_API);
     getDeviceInfo.then(
         function (data) {
+            devices = [];
             for (let i = 0; i < data.length; i++) {
                 let device = data[i];
                 deviceCount += 1;
                 if (device.status === "ONLINE") {
                     deviceStatusData[0] += 1;
+                    devices.push({
+                        id: data[i].macAddr,
+                        text: data[i].type + " - " + data[i].macAddr
+                    });
                 } else {
                     deviceStatusData[1] += 1;
                 }
@@ -129,24 +135,24 @@ $('#dashboard').on('click', function () {
         }
     );
 
-    let getLatestTemperature = ajaxQuery(LATEST_UNIT_DATA + "?unit=C");
-    getLatestTemperature.then(
-        function (data) {
-            $('#current-temperature').html(data[0].latestValue);
-        },
-        function (error) {
-            console.log(error);
-        }
-    )
-    let getLatestLight = ajaxQuery(LATEST_UNIT_DATA + "?unit=Lux");
-    getLatestLight.then(
-        function (data) {
-            $('#current-ligth').html(data[0].latestValue);
-        },
-        function (error) {
-            console.log(error);
-        }
-    );
+    function getLatestUnitData(url, unit, elementValue, elementDatetime) {
+        let getLatestData = ajaxQuery(url + "?unit=" + unit);
+        getLatestData.then(
+            function (data) {
+                let datetime = new Date(data[0].time);
+                $(elementValue).html(data[0].latestValue);
+                $(elementDatetime).html(formatOutputDate(datetime));
+            },
+            function (error) {
+                console.log(error);
+            }
+        )
+    }
+
+    currentDataUnitUpdate = setInterval(function () {
+        getLatestUnitData(LATEST_UNIT_DATA, "C", "#current-temperature", '#current-temperature-datetime');
+        getLatestUnitData(LATEST_UNIT_DATA, "Lux", "#current-light", '#current-light-datetime');
+    }, currentDataUnitIntervalTime);
 
     var ctx = document.getElementById("average-temperature-bar-chart");
     let temperatureAverageBarChart = new Chart(ctx, {
@@ -174,9 +180,9 @@ $('#dashboard').on('click', function () {
             //         }
             //     }]
             // },
-            tooltips: {
-                mode: 'nearest'
-            },
+            // tooltips: {
+            //     mode: 'nearest'
+            // },
             legend: {
                 display: true,
                 position: 'top'
@@ -189,9 +195,11 @@ $('#dashboard').on('click', function () {
         function (data) {
             // console.log(data);
             let dayValue = [];
-            for(let i = 0;i<data.length;i++){
-                if(data[i]) {
-                    dayValue.push(data[i].value);
+            for (let i = 0; i < data.length; i++) {
+                if (data[i]) {
+                    let value = data[i].value;
+                    value = Math.round(value * 100) / 100;
+                    dayValue.push(value);
                 }
             }
             temperatureAverageBarChart.data.datasets[0].data = dayValue;
@@ -211,4 +219,28 @@ $('.small-box-device a').on('click', function () {
 
 $('.small-box-sensor a').on('click', function () {
     $('#sensors-info').click();
+});
+
+$('#room1-led1-btn-on').on('click', function () {
+
+    $.post(THINGS_ACTION_URL,
+        {
+            topic: "bkcloud/MAC/action",
+            message:{
+                type: "ledAction",
+                action: "ON"
+            }
+        },
+        function (data, status) {
+            alert("Data: " + data + "\nStatus: " + status);
+        }
+    );
+    $('#room1-led1-state').html('ON');
+    $('#room1-led1-btn-on').addClass('disabled');
+    $('#room1-led1-btn-off').removeClass('disabled');
+});
+$('#room1-led1-btn-off').on('click', function () {
+    $('#room1-led1-state').html('OFF');
+    $('#room1-led1-btn-off').addClass('disabled');
+    $('#room1-led1-btn-on').removeClass('disabled');
 });

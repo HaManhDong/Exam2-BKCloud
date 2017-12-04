@@ -1,8 +1,5 @@
 'use strict';
 
-var dataTables;
-var realTimeCharts = [];
-var devices = [];
 var DEVICE_INFO_API = '/device/api/info';
 var SENSOR_INFO_API = '/sensor/api/info';
 var DEVICE_LOGS_API = '/device/api/logs';
@@ -12,9 +9,15 @@ var INIT_DATA_API = '/realtime-chart/api/device/initData';
 var LATEST_UNIT_DATA = '/latestUnitData';
 var TEMPERATURE_AVERAGE = '/temperatureAvarage';
 var LATEST_DATA_API = '/realtime-chart/api/sensor/latestData';
+var THINGS_ACTION_URL = '/actionToThings';
 var MAC_ADDR_PARAM = 'macAddr';
 var SENSOR_ID_PARAM = 'sensorIDs';
 
+var dataTables;
+var realTimeCharts = [];
+var devices = [];
+var currentDataUnitUpdate;
+var currentDataUnitIntervalTime = 2000; // 2s
 
 $('.bkcloud-sidebar-element').each(function (index) {
     $(this).on('click', function () {
@@ -39,6 +42,15 @@ var create_datatables_logs = function (selector, data, columns) {
     });
 };
 
+var formatOutputDate = function (datetime) {
+    let day = datetime.getDate();
+    let monthIndex = datetime.getMonth();
+    let year = datetime.getFullYear();
+    let hour = datetime.toString().split(' ')[4];
+    let fullDateTime = hour + " " + day + "-" + monthIndex + "-" + year;
+    return fullDateTime;
+}
+
 let remove_charts_tab = function () {
     if (realTimeCharts.length) {
         for (let i = 0; i < realTimeCharts.length; i++) {
@@ -49,14 +61,22 @@ let remove_charts_tab = function () {
     }
 }
 
+let disableDashboardTab = function () {
+    $('.bkcloud-dashboard').css('display', 'none');
+    $('.current-value-sensors').css('display', 'none');
+    $('.avarage-temperature-chart').css('display', 'none');
+    $('.things-state-container').css('display', 'none');
+    if (currentDataUnitUpdate) {
+        clearInterval(currentDataUnitUpdate);
+    }
+}
+
 $('#devices-info').on('click', function () {
 
     remove_charts_tab();
 
     $('#content-header-text').text('Devices information');
-    $('.bkcloud-dashboard').css('display', 'none');
-    $('.current-value-sensors').css('display', 'none');
-    $('.avarage-temperature-chart').css('display', 'none');
+    disableDashboardTab();
     $('.bkcloud-datatables-info-container').css('display', '');
     $('#sensor-data-chart-container').css('display', 'none');
     $('#load-data-for-table').css('display', '').text("Loading data ...");
@@ -109,9 +129,7 @@ $('#sensors-info').on('click', function () {
     remove_charts_tab();
 
     $('#content-header-text').text('Sensors information');
-    $('.bkcloud-dashboard').css('display', 'none');
-    $('.current-value-sensors').css('display', 'none');
-    $('.avarage-temperature-chart').css('display', 'none');
+    disableDashboardTab();
     $('.bkcloud-datatables-info-container').css('display', '');
     $('#sensor-data-chart-container').css('display', 'none');
     $('#load-data-for-table').css('display', '').text("Loading data ... ");
@@ -165,6 +183,7 @@ $('#line-chart').on('click', function () {
     $('#content-header-text').text('Lines chart');
     $('#sensor-data-chart-container').css('display', '');
     $('.bkcloud-datatables-info-container').css('display', 'none');
+    disableDashboardTab();
     if (realTimeCharts.length) {
         for (let i = 0; i < realTimeCharts.length; i++) {
             realTimeCharts[i].destroy();
