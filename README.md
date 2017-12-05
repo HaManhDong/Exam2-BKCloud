@@ -23,19 +23,22 @@ Các bảng trong mysql:
 
 **sensor**
 
-	macAddr | name | unit | created_at | status | last_updated
+	macAddr | name | unit | created_at | status | type | last_updated
 	
 	CREATE TABLE sensor (
-	name 		VARCHAR		NOT NULL,
-	macAddr 	VARCHAR 	NOT NULL,
-	unit 		VARCHAR,
-	status 		VARCHAR 	NOT NULL,
+	name 		VARCHAR(255)	NOT NULL,
+	macAddr 	VARCHAR(255) 	NOT NULL,
+	unit 		VARCHAR(255),
+	status 		VARCHAR(255) 	NOT NULL,
+	type 		VARCHAR(255) 	NOT NULL,
 	created_at 	DATETIME	NOT NULL,
 	last_updated 	DATETIME 	NOT NULL,
 	PRIMARY KEY (name, macAddr),
 	CONSTRAINT fk_device FOREIGN KEY (macAddr) REFERENCES device(macAddr) ON DELETE CASCADE
 	)
 
+Trong đó trường **type** thể  hiện loại của sensor là **led** hay **servo** hay **data** (loại để lấy dữ liệu như nhiệt độ, độ ẩm ...) hoặc các loại sensor khác.
+ 
 
 **InFluxDB**:  tên database: **iot**
 
