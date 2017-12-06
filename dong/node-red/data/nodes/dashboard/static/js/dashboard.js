@@ -88,6 +88,7 @@ $('#dashboard').on('click', function () {
     let getDeviceInfo = ajaxQuery(DEVICE_INFO_API);
     getDeviceInfo.then(
         function (data) {
+            // devices = [{id: "", text: "-- Select device --"}];
             devices = [];
             for (let i = 0; i < data.length; i++) {
                 let device = data[i];
@@ -139,9 +140,9 @@ $('#dashboard').on('click', function () {
         let getLatestData = ajaxQuery(url + "?unit=" + unit);
         getLatestData.then(
             function (data) {
-                let datetime = new Date(data[0].time);
+                let datetime = moment(data[0].time).format("HH:mm:ss DD-MM-YYYY");
                 $(elementValue).html(data[0].latestValue);
-                $(elementDatetime).html(formatOutputDate(datetime));
+                $(elementDatetime).html(datetime);
             },
             function (error) {
                 console.log(error);
@@ -155,10 +156,22 @@ $('#dashboard').on('click', function () {
     }, currentDataUnitIntervalTime);
 
     var ctx = document.getElementById("average-temperature-bar-chart");
+    let days = ["Mon", "Tue", "Wed", "Thus", "Fri", "Sa"];
+    let today = new Date();
+    let d = today.toString().split(" ")[0];
+    const index = days.indexOf(d);
+    let label = [];
+    if (index !== -1) {
+        // days.splice(index, 1);
+        let l1 = days.slice(0, index);
+        let l2 = days.slice(index + 1, days.length);
+        label = l2.concat(l1);
+    }
     let temperatureAverageBarChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ["Mon", "Tue", "Wed", "Thus", "Fri", "Sa"],
+            // labels: ["Mon", "Tue", "Wed", "Thus", "Fri", "Sa"],
+            labels: label,
             datasets: [
                 {
                     label: 'Temperature',

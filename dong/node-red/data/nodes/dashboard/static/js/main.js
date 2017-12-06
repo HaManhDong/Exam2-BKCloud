@@ -6,12 +6,16 @@ var DEVICE_LOGS_API = '/device/api/logs';
 var SENSOR_LOGS_API = '/sensor/api/logs';
 var SENSOR_COUNT_API = '/sensor/api/count';
 var INIT_DATA_API = '/realtime-chart/api/device/initData';
+var SENSORS_OF_DEVICE = '/device/sensors';
 var LATEST_UNIT_DATA = '/latestUnitData';
 var TEMPERATURE_AVERAGE = '/temperatureAvarage';
 var LATEST_DATA_API = '/realtime-chart/api/sensor/latestData';
 var THINGS_ACTION_URL = '/actionToThings';
 var MAC_ADDR_PARAM = 'macAddr';
 var SENSOR_ID_PARAM = 'sensorIDs';
+var SENSOR_INIT_DATA = 'sensor/chart/initData';
+var SENSOR_LATEST_DATA = 'sensor/chart/latestData';
+var SENSOR_NAME_PARAM = 'sensorName';
 
 var dataTables;
 var realTimeCharts = [];
@@ -41,15 +45,6 @@ var create_datatables_logs = function (selector, data, columns) {
         columns: columns
     });
 };
-
-var formatOutputDate = function (datetime) {
-    let day = datetime.getDate();
-    let monthIndex = datetime.getMonth();
-    let year = datetime.getFullYear();
-    let hour = datetime.toString().split(' ')[4];
-    let fullDateTime = hour + " " + day + "-" + monthIndex + "-" + year;
-    return fullDateTime;
-}
 
 let remove_charts_tab = function () {
     if (realTimeCharts.length) {
@@ -178,91 +173,6 @@ var ajaxQuery = function (url) {
         });
     });
 }
-
-$('#line-chart').on('click', function () {
-    $('#content-header-text').text('Lines chart');
-    $('#sensor-data-chart-container').css('display', '');
-    $('.bkcloud-datatables-info-container').css('display', 'none');
-    disableDashboardTab();
-    if (realTimeCharts.length) {
-        for (let i = 0; i < realTimeCharts.length; i++) {
-            realTimeCharts[i].destroy();
-        }
-        $('#sensor-data-chart').empty();
-        $('#sensor-legend-chart').empty();
-    }
-    console.log(devices);
-    if (devices.length) {
-        $('#combobox-devices').css('display', "");
-        $('#load-data-for-chart').css('display', "none");
-        $('#chart-controller-input').select2({
-            width: '100%',
-            data: devices
-        }).on("select2:select", function (e) {
-            $(this).prop('disabled', true);
-            var self = this;
-            let macAddr = e.target.value;
-            if (realTimeCharts.length) {
-                for (let i = 0; i < realTimeCharts.length; i++) {
-                    realTimeCharts[i].destroy();
-                }
-                $('#sensor-data-chart').empty();
-                $('#sensor-legend-chart').empty();
-            }
-            getInitDeviceData(macAddr).then(
-                function (initData) {
-                    let is_had_realtime_data = false;
-                    for (let i = 0; i < initData.length; i++) {
-                        if (initData[i].lines.length) {
-                            is_had_realtime_data = true;
-                            let realTimeChart = new RealtimeLineChart('sensor-data-chart', initData[i].unit);
-                            realTimeChart.initChart(initData[i].lines);
-                            realTimeCharts.push(realTimeChart);
-                        }
-                    }
-                    if (is_had_realtime_data) {
-                        $('#no-data-realtime').css("display", 'none');
-                    } else {
-                        $('#no-data-realtime').css("display", '');
-                    }
-                },
-                function (error) {
-                    alert('Can not get device data');
-                    console.log(error);
-                }
-            )
-            setTimeout(function () {
-                $(self).prop('disabled', false);
-            }, 1000);
-        })
-
-        getInitDeviceData(devices[0].id).then(
-            function (initData) {
-                for (let i = 0; i < initData.length; i++) {
-                    let is_had_realtime_data = false;
-                    if (initData[i].lines.length) {
-                        is_had_realtime_data = true;
-                        let realTimeChart = new RealtimeLineChart('sensor-data-chart', initData[i].unit);
-                        realTimeChart.initChart(initData[i].lines);
-                        realTimeCharts.push(realTimeChart);
-                    }
-                    if (is_had_realtime_data) {
-                        $('#no-data-realtime').css("display", 'none');
-                    } else {
-                        $('#no-data-realtime').css("display", '');
-                    }
-                }
-            },
-            function (error) {
-                alert('Can not get device data');
-                console.log(error);
-            }
-        )
-    } else {
-        $('#combobox-devices').css('display', "none");
-        $('#load-data-for-chart').css('display', "").text("Have no data!");
-    }
-});
 
 var getInitDeviceData = function (macAddr) {
     return new Promise(function (resolve, reject) {
