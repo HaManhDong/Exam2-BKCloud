@@ -59,14 +59,14 @@ Các measurement    
 	
 **2. Các topic trên MQTT**
 
-**bkcloud/data** từ ESP gửi lên Node-red với 2 định dạng:
+**esp/data** từ ESP gửi lên Node-red với 2 định dạng:
 
 	{
 		macAddr: "", 
 		type: "data",
 		sensorsData: [
 			{name: "DHT11-t", value: 24, unit: "C"},
-			{name: "BH1750", value: 6000, unit: "Lux"},
+			{name: "DHT11-h", value: 70, unit: "%"},
 		]
 	}
 	
@@ -77,7 +77,7 @@ Các measurement    
 	}
 
 
-**bkcloud/MAC/action** gửi từ Node-red tới ESP với **3** định dạng:
+**esp/MAC/action** gửi từ Node-red tới ESP với **3** định dạng:
 
 	{
 		type: "register", status: "OK"
@@ -94,16 +94,15 @@ Các measurement    
 	}
 
 
-**bkcloud/newDevice**
+**esp/newDevice**
 
 	{
 		macAddr: "5C:3B:1A:16:2A",
 		type: "ESP8266",
-		deviceID: "",
+		deviceID: "team01",
 		sensors:  [
 			{ name: "DHT11-t", unit: "C"},
-			{ name: "BH1750", unit: "Lux"},
-			{ name: "HC-SR501", unit: ""}
+			{ name: "BH1750", unit: "%"}
 		]
 	}
 
