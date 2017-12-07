@@ -9,12 +9,13 @@ Các bảng trong mysql:
 
 **device**
 
-	macAdrr | type | created_at | status | last_updated
+	macAdrr | device_id | type | created_at | status | last_updated
 	
 	CREATE TABLE device (
-	macAddr 	VARCHAR 	NOT NULL,
-	type		VARCHAR 	NOT NULL,
-	status 		VARCHAR 	NOT NULL,
+	macAddr 	VARCHAR(255) 	NOT NULL,
+	device_id 	VARCHAR(255) 	NOT NULL,
+	type		VARCHAR(255) 	NOT NULL,
+	status 		VARCHAR(255) 	NOT NULL,
 	created_at 	DATETIME 	NOT NULL,
 	last_updated 	DATETIME 	NOT NULL,
 	PRIMARY KEY (macAddr)
