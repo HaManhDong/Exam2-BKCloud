@@ -65,15 +65,9 @@ Các measurement    
 			{name: "DHT11-h", value: 70, unit: "%"},
 		]
 	}
-	
-	{
-		macAddr: "", 
-		name: "HC-SR501",
-		type: "motion",
-	}
 
 
-**esp/MAC/action** gửi từ Node-red tới ESP với **3** định dạng:
+**esp/MAC/action** gửi từ Node-red tới ESP với **2** định dạng:
 
 	{
 		type: "register", status: "OK"
@@ -81,11 +75,6 @@ Các measurement    
 
 	{
 		type: "ledAction",
-		action: "ON/OFF"
-	}
-	
-	{
-		type: "servoAction",
 		action: "ON/OFF"
 	}
 
@@ -98,7 +87,7 @@ Các measurement    
 		deviceID: "team01",
 		sensors:  [
 			{ name: "DHT11-t", unit: "C"},
-			{ name: "BH1750", unit: "%"}
+			{ name: "DHT11-h", unit: "%"}
 		]
 	}
 
