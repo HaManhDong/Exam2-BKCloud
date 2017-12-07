@@ -9,56 +9,48 @@ Các bảng trong mysql:
 
 **device**
 
-	macAdrr | device_id | type | created_at | status
+	location | device_id | type | created_at | status
 	
 	CREATE TABLE device (
-	macAddr 	VARCHAR(255) 	NOT NULL,
+	location 	VARCHAR(255) 	NOT NULL,
 	device_id 	VARCHAR(255) 	NOT NULL,
 	type		VARCHAR(255) 	NOT NULL,
 	status 		VARCHAR(255) 	NOT NULL,
 	created_at 	DATETIME 	NOT NULL,
-	PRIMARY KEY (macAddr)
+	PRIMARY KEY (location)
 	)
 
 
 **sensor**
 
-	macAddr | name | unit | created_at | status
+	location | name | unit | created_at | status
 	
 	CREATE TABLE sensor (
 	name 		VARCHAR(255)	NOT NULL,
-	macAddr 	VARCHAR(255) 	NOT NULL,
+	location 	VARCHAR(255) 	NOT NULL,
 	unit 		VARCHAR(255),
 	status 		VARCHAR(255) 	NOT NULL,
 	type 		VARCHAR(255) 	NOT NULL,
 	created_at 	DATETIME	NOT NULL,
-	PRIMARY KEY (name, macAddr),
-	CONSTRAINT fk_device FOREIGN KEY (macAddr) REFERENCES device(macAddr) ON DELETE CASCADE
+	PRIMARY KEY (name, location),
+	CONSTRAINT fk_device FOREIGN KEY (location) REFERENCES device(location) ON DELETE CASCADE
 	)
  
 
 **InFluxDB**:  tên database: **iot**
 
 Các measurement     
- 
-**device_logs**
-
-	time | macAddr (tag) | status (field - String)
-	
-**sensor_logs**
-
-	time | macAddr (tag) | name (tag) | status (field - String)
 
 **data**
 
-	time | macAddr (tag)  | name (tag) | unit (field - String) | value (field - Float)
+	time | location (tag)  | name (tag) | unit (field - String) | value (field - Float)
 	
 **2. Các topic trên MQTT**
 
 **esp/data** từ ESP gửi lên Node-red với 2 định dạng:
 
 	{
-		macAddr: "", 
+		location: "", 
 		type: "data",
 		sensorsData: [
 			{name: "DHT11-t", value: 24, unit: "C"},
@@ -82,7 +74,7 @@ Các measurement    
 **esp/newDevice**
 
 	{
-		macAddr: "5C:3B:1A:16:2A",
+		location: "",
 		type: "ESP8266",
 		deviceID: "team01",
 		sensors:  [
