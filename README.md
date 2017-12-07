@@ -99,6 +99,7 @@ Các measurement    
 	{
 		macAddr: "5C:3B:1A:16:2A",
 		type: "ESP8266",
+		deviceID: "",
 		sensors:  [
 			{ name: "DHT11-t", unit: "C"},
 			{ name: "BH1750", unit: "Lux"},
